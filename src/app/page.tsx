@@ -3,10 +3,9 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { HelpCircle } from 'lucide-react';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 
 export default function AlgerianLifePage() {
   const [hasMoney, setHasMoney] = useState(false);
@@ -36,11 +35,6 @@ export default function AlgerianLifePage() {
 
   return (
     <div className="min-h-screen w-full flex flex-col items-center justify-center p-4 selection:bg-primary/40 selection:text-primary-foreground bg-background text-foreground">
-      <div className="absolute top-4 left-4">
-        <Link href="/about" passHref>
-          <HelpCircle className="h-7 w-7 text-primary hover:text-primary/80 transition-colors" aria-label="About page" />
-        </Link>
-      </div>
       <Card className="w-full max-w-md shadow-2xl bg-card text-card-foreground">
         <CardHeader className="text-center">
           <CardTitle>
@@ -88,6 +82,13 @@ export default function AlgerianLifePage() {
             />
           </div>
         </CardContent>
+        <CardFooter className="flex-col items-center pt-2 pb-6">
+          <Link href="/about" passHref>
+            <span className="text-sm text-primary hover:underline cursor-pointer">
+              What is this?
+            </span>
+          </Link>
+        </CardFooter>
       </Card>
     </div>
   );

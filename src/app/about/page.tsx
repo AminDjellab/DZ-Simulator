@@ -5,8 +5,8 @@ import { ArrowLeft } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 export const metadata: Metadata = {
-  title: 'About Algerian Life',
-  description: 'Information about the Algerian Life simulator and its developer.',
+  title: 'About Algerian Life Sim',
+  description: 'Information about the Algerian Life sim and its developer.',
 };
 
 export default function AboutPage() {
@@ -18,21 +18,24 @@ export default function AboutPage() {
             <ArrowLeft size={28} />
           </Link>
           <CardTitle className="text-center text-2xl font-semibold tracking-tight pt-2">
-            About Algerian Life
+            About Algerian Life Sim
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-6 pt-6 pb-10">
           <div className="text-center">
-            <p className="font-semibold text-lg">Developed by Amin Djellab</p>
+            <p className="text-base">
+              Algerian Life Sim is about how life in Algeria is hard.
+            </p>
+            <p className="font-semibold text-lg mt-2">Developed by D-2646 (AMIN DJELLAB)</p>
           </div>
 
-          <div className="space-y-2">
+          <div className="space-y-2 text-center">
             <h2 className="text-xl font-semibold text-primary">Support My Work</h2>
             <p className="text-base">
               If you enjoy Algerian Life Simulator and would like to support my journey in the game development industry, any contribution would be greatly appreciated and help me continue to learn and create.
             </p>
             <p className="text-base">You can send support via:</p>
-            <ul className="list-disc list-inside space-y-1 pl-4 text-base">
+            <ul className="list-none space-y-1 text-base">
               <li>
                 <strong>Binance:</strong> Using my UID: <span className="font-mono text-primary text-sm">91561758</span>
               </li>
@@ -42,7 +45,7 @@ export default function AboutPage() {
             </ul>
           </div>
 
-          <div className="space-y-2">
+          <div className="space-y-2 text-center">
             <h2 className="text-xl font-semibold text-primary">Contact</h2>
             <p className="text-base">
               You can contact me via email at: <a href="mailto:its.amin.djellab@gmail.com" className="text-primary hover:underline">its.amin.djellab@gmail.com</a>
