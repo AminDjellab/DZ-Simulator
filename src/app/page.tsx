@@ -47,11 +47,24 @@ export default function AlgerianLifePage() {
     const previousHasMoney = hasMoney;
     setHasMoney(checked);
 
-    if (checked && isAlgerian && isLivingInAlgeria) { // If this action would make all 3 true
-        if (!previousHasMoney) { // And it was 'hasMoney' that was just turned ON
-            setAttemptCounter(prev => prev + 1);
-        }
-        setIsAlgerian(false); // Resolve conflict: turn 'isAlgerian' OFF
+    // Check if this action is turning ON the switch to complete the trio
+    if (checked && !previousHasMoney && isAlgerian && isLivingInAlgeria) {
+      const newAttemptCounter = attemptCounter + 1;
+      setAttemptCounter(newAttemptCounter);
+
+      if (newAttemptCounter === 5) {
+        // 5th attempt: turn all switches ON, including yaKelHaram
+        setHasMoney(true);
+        setIsAlgerian(true);
+        setIsLivingInAlgeria(true);
+        setYaKelHaram(true);
+        return; // All switches are now on due to yaKelHaram, bypass normal 3-switch conflict
+      }
+    }
+
+    // Regular 3-switch conflict resolution (if not the 5th attempt override)
+    if (checked && isAlgerian && isLivingInAlgeria && !yaKelHaram) {
+        setIsAlgerian(false); 
     }
   };
 
@@ -59,11 +72,21 @@ export default function AlgerianLifePage() {
     const previousIsAlgerian = isAlgerian;
     setIsAlgerian(checked);
 
-    if (checked && hasMoney && isLivingInAlgeria) { // If this action would make all 3 true
-        if (!previousIsAlgerian) { // And it was 'isAlgerian' that was just turned ON
-            setAttemptCounter(prev => prev + 1);
-        }
-        setIsLivingInAlgeria(false); // Resolve conflict: turn 'isLivingInAlgeria' OFF
+    if (checked && !previousIsAlgerian && hasMoney && isLivingInAlgeria) {
+      const newAttemptCounter = attemptCounter + 1;
+      setAttemptCounter(newAttemptCounter);
+
+      if (newAttemptCounter === 5) {
+        setHasMoney(true);
+        setIsAlgerian(true);
+        setIsLivingInAlgeria(true);
+        setYaKelHaram(true);
+        return;
+      }
+    }
+    
+    if (checked && hasMoney && isLivingInAlgeria && !yaKelHaram) {
+      setIsLivingInAlgeria(false);
     }
   };
 
@@ -71,11 +94,21 @@ export default function AlgerianLifePage() {
     const previousIsLivingInAlgeria = isLivingInAlgeria;
     setIsLivingInAlgeria(checked);
 
-    if (checked && hasMoney && isAlgerian) { // If this action would make all 3 true
-        if (!previousIsLivingInAlgeria) { // And it was 'isLivingInAlgeria' that was just turned ON
-            setAttemptCounter(prev => prev + 1);
-        }
-        setHasMoney(false); // Resolve conflict: turn 'hasMoney' OFF
+    if (checked && !previousIsLivingInAlgeria && hasMoney && isAlgerian) {
+      const newAttemptCounter = attemptCounter + 1;
+      setAttemptCounter(newAttemptCounter);
+
+      if (newAttemptCounter === 5) {
+        setHasMoney(true);
+        setIsAlgerian(true);
+        setIsLivingInAlgeria(true);
+        setYaKelHaram(true);
+        return;
+      }
+    }
+
+    if (checked && hasMoney && isAlgerian && !yaKelHaram) {
+      setHasMoney(false);
     }
   };
 
