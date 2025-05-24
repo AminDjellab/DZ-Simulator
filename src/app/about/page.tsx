@@ -2,14 +2,13 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { ArrowLeft } from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'; // Removed CardDescription as it's not used here.
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 export const metadata: Metadata = {
   title: 'About Algerian Life',
   description: 'Information about the Algerian Life simulator and its developer.',
 };
 
-// Minimal translations for this page, can be expanded later if needed
 const aboutTranslations = {
   en: {
     title: "About Algerian Life",
@@ -41,10 +40,7 @@ const aboutTranslations = {
   }
 };
 
-// Simple way to get language preference, defaults to 'ar'
-// In a real app, this might come from a global context or localStorage
-// For now, keeping it simple as it's not actively switchable on this page without more setup.
-const preferredLang: 'en' | 'ar' = 'ar'; // Default to Arabic as per request for main page
+const preferredLang: 'en' | 'ar' = 'ar'; 
 const T = aboutTranslations[preferredLang];
 
 
@@ -56,17 +52,17 @@ export default function AboutPage() {
           <Link href="/" className={`absolute top-4 ${preferredLang === 'ar' ? 'right-4' : 'left-4'} text-primary hover:text-primary/80 transition-colors`} aria-label={T.backToHome}>
             <ArrowLeft size={28} className={preferredLang === 'ar' ? 'transform scale-x-[-1]' : ''} />
           </Link>
-          <CardTitle className="text-center text-2xl font-bold tracking-tight pt-2">
+          <CardTitle className="text-center text-xl font-bold tracking-tight pt-2">
             {T.title}
           </CardTitle>
         </CardHeader>
-        <CardContent className="space-y-6 pt-6 pb-10 text-base leading-relaxed"> {/* Adjusted text size for pixel font */}
+        <CardContent className="space-y-6 pt-6 pb-10 text-sm leading-relaxed">
           <div className="text-center">
-            <p className="font-semibold text-lg">{T.developedBy}</p>
+            <p className="font-semibold text-base">{T.developedBy}</p> 
           </div>
           
           <div className="space-y-2">
-            <h2 className="text-xl font-semibold text-primary">{T.supportTitle}</h2>
+            <h2 className="text-lg font-semibold text-primary">{T.supportTitle}</h2>
             <p>
               {T.supportMessage}
             </p>
@@ -82,7 +78,7 @@ export default function AboutPage() {
           </div>
 
           <div className="space-y-2">
-            <h2 className="text-xl font-semibold text-primary">{T.contactTitle}</h2>
+            <h2 className="text-lg font-semibold text-primary">{T.contactTitle}</h2>
             <p>
               {T.contactMessage} <a href="mailto:its.amin.djellab@gmail.com" className="text-primary hover:underline">its.amin.djellab@gmail.com</a>
             </p>
