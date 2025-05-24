@@ -1,6 +1,7 @@
+
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
@@ -10,26 +11,31 @@ export default function AlgerianLifePage() {
   const [isAlgerian, setIsAlgerian] = useState(false);
   const [isLivingInAlgeria, setIsLivingInAlgeria] = useState(false);
 
-  // Rule 1: If 'Living in Algeria' and 'Has Money' are true, then 'Is Algerian' turns off.
-  useEffect(() => {
-    if (isLivingInAlgeria && hasMoney) {
+  const handleHasMoneyChange = (checked: boolean) => {
+    setHasMoney(checked);
+    if (checked && isAlgerian && isLivingInAlgeria) {
+      // If turning HasMoney ON makes all three true, turn IsAlgerian OFF.
       setIsAlgerian(false);
     }
-  }, [isLivingInAlgeria, hasMoney]);
+  };
 
-  // Rule 2: If 'Has Money' and 'Is Algerian' are true, then 'Living in Algeria' turns off.
-  useEffect(() => {
-    if (hasMoney && isAlgerian) {
+  const handleIsAlgerianChange = (checked: boolean) => {
+    setIsAlgerian(checked);
+    if (checked && hasMoney && isLivingInAlgeria) {
+      // If turning IsAlgerian ON makes all three true, turn LivingInAlgeria OFF.
       setIsLivingInAlgeria(false);
     }
-  }, [hasMoney, isAlgerian]);
+  };
 
-  // Rule 3: If 'Living in Algeria' and 'Is Algerian' are true, then 'Has Money' turns off.
-  useEffect(() => {
-    if (isLivingInAlgeria && isAlgerian) {
+  const handleIsLivingInAlgeriaChange = (checked: boolean) => {
+    setIsLivingInAlgeria(checked);
+    // This is the primary joke:
+    // If LivingInAlgeria is turned ON, and HasMoney and IsAlgerian were already ON,
+    // then HasMoney turns OFF.
+    if (checked && hasMoney && isAlgerian) {
       setHasMoney(false);
     }
-  }, [isLivingInAlgeria, isAlgerian]);
+  };
 
   return (
     <div className="min-h-screen w-full flex flex-col items-center justify-center p-4 selection:bg-primary/40 selection:text-primary-foreground">
@@ -45,37 +51,37 @@ export default function AlgerianLifePage() {
         <CardContent className="space-y-10 pt-6 pb-10">
           <div className="flex items-center justify-between p-4 rounded-lg bg-secondary/50 shadow-md hover:shadow-lg transition-shadow duration-300">
             <Label htmlFor="money-switch" className="text-xl font-medium">
-              Do you have money?
+              Has Money
             </Label>
             <Switch
               id="money-switch"
               checked={hasMoney}
-              onCheckedChange={setHasMoney}
-              aria-label="Toggle money status"
+              onCheckedChange={handleHasMoneyChange}
+              aria-label="Toggle Has Money status"
               className="data-[state=checked]:bg-primary data-[state=unchecked]:bg-muted"
             />
           </div>
           <div className="flex items-center justify-between p-4 rounded-lg bg-secondary/50 shadow-md hover:shadow-lg transition-shadow duration-300">
             <Label htmlFor="algerian-switch" className="text-xl font-medium">
-              Are you Algerian?
+              Algerian
             </Label>
             <Switch
               id="algerian-switch"
               checked={isAlgerian}
-              onCheckedChange={setIsAlgerian}
+              onCheckedChange={handleIsAlgerianChange}
               aria-label="Toggle Algerian status"
               className="data-[state=checked]:bg-primary data-[state=unchecked]:bg-muted"
             />
           </div>
           <div className="flex items-center justify-between p-4 rounded-lg bg-secondary/50 shadow-md hover:shadow-lg transition-shadow duration-300">
             <Label htmlFor="living-switch" className="text-xl font-medium">
-              Are you living in Algeria?
+              Living in Algeria
             </Label>
             <Switch
               id="living-switch"
               checked={isLivingInAlgeria}
-              onCheckedChange={setIsLivingInAlgeria}
-              aria-label="Toggle living in Algeria status"
+              onCheckedChange={handleIsLivingInAlgeriaChange}
+              aria-label="Toggle Living in Algeria status"
               className="data-[state=checked]:bg-primary data-[state=unchecked]:bg-muted"
             />
           </div>
