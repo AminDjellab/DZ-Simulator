@@ -16,7 +16,7 @@ const translations = {
     algerian: "Algerian",
     livingInAlgeria: "Living in Algeria",
     yaKelHaram: "Illegal Money",
-    toggleTo: "العربية",
+    toggleTo: "الدارجة",
     pageTitle: "Algerian Life",
     pageDescription: "A choices simulator.",
     whatIsThis: "What is this?",
