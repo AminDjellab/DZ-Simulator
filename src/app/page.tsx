@@ -82,16 +82,16 @@ export default function AlgerianLifePage() {
       
       <Card className="w-full max-w-lg shadow-2xl bg-card/80 backdrop-blur-sm border-border/50" dir={language === 'ar' ? 'rtl' : 'ltr'}>
         <CardHeader className="pb-4 text-center">
-          <CardTitle className="text-xl font-extrabold tracking-tight pt-2">
+          <CardTitle className="text-lg font-extrabold tracking-tight pt-2">
             {currentTranslations.title}
           </CardTitle>
-          <CardDescription className="text-muted-foreground text-xs pt-1">
+          <CardDescription className="text-muted-foreground text-[11px] pt-1">
             {currentTranslations.description}
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-8 pt-6 pb-10">
           <div className="flex items-center justify-between p-3 rounded-lg bg-secondary/50 shadow-md hover:shadow-lg transition-shadow duration-300">
-            <Label htmlFor="money-switch" className="text-sm font-medium">
+            <Label htmlFor="money-switch" className="text-xs font-medium">
               {currentTranslations.hasMoney}
             </Label>
             <Switch
@@ -103,7 +103,7 @@ export default function AlgerianLifePage() {
             />
           </div>
           <div className="flex items-center justify-between p-3 rounded-lg bg-secondary/50 shadow-md hover:shadow-lg transition-shadow duration-300">
-            <Label htmlFor="algerian-switch" className="text-sm font-medium">
+            <Label htmlFor="algerian-switch" className="text-xs font-medium">
               {currentTranslations.isAlgerian}
             </Label>
             <Switch
@@ -115,7 +115,7 @@ export default function AlgerianLifePage() {
             />
           </div>
           <div className="flex items-center justify-between p-3 rounded-lg bg-secondary/50 shadow-md hover:shadow-lg transition-shadow duration-300">
-            <Label htmlFor="living-switch" className="text-sm font-medium">
+            <Label htmlFor="living-switch" className="text-xs font-medium">
               {currentTranslations.isLivingInAlgeria}
             </Label>
             <Switch
