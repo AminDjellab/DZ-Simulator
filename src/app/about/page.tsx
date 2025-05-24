@@ -49,7 +49,7 @@ const aboutTranslations = {
 export default function AboutPage() {
   const searchParams = useSearchParams();
   const langQuery = searchParams.get('lang');
-  const currentLang: Language = (langQuery === 'ar' || langQuery === 'en') ? langQuery : 'en';
+  const currentLang: Language = (langQuery === 'ar' || langQuery === 'en') ? langQuery : 'en'; // Default to 'en' if no valid lang
   const t = aboutTranslations[currentLang];
 
   // It's better to set metadata in a parent layout or dynamically if needed,
