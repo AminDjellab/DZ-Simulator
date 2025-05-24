@@ -16,6 +16,7 @@ const translations = {
     algerian: "Algerian",
     livingInAlgeria: "Living in Algeria",
     yaKelHaram: "Illegal Money",
+    oneInAThousand: "You are one in a thousand",
     toggleTo: "الدارجة",
     pageTitle: "Algerian Life",
     pageDescription: "A choices simulator.",
@@ -27,9 +28,10 @@ const translations = {
     algerian: "جزايري",
     livingInAlgeria: "عايش في الدزاير",
     yaKelHaram: "ياكل الحرام",
+    oneInAThousand: "نتا واحد في الالف",
     toggleTo: "English",
-    pageTitle: "Algerian Life", // Title remains in English as requested
-    pageDescription: "A choices simulator.", // Description remains in English
+    pageTitle: "Algerian Life",
+    pageDescription: "A choices simulator.",
     whatIsThis: "ما هذا؟",
     resetExperience: "إعادة ضبط",
   }
@@ -39,91 +41,100 @@ export default function AlgerianLifePage() {
   const [hasMoney, setHasMoney] = useState(false);
   const [isAlgerian, setIsAlgerian] = useState(false);
   const [isLivingInAlgeria, setIsLivingInAlgeria] = useState(false);
-  const [yaKelHaram, setYaKelHaram] = useState(false);
   const [language, setLanguage] = useState<Language>('en');
   const [attemptCounter, setAttemptCounter] = useState(0);
+  const [yaKelHaram, setYaKelHaram] = useState(false);
+  const [showYaKelHaramSwitch, setShowYaKelHaramSwitch] = useState(false);
+  const [oneInAThousand, setOneInAThousand] = useState(false);
+  const [showOneInAThousandSwitch, setShowOneInAThousandSwitch] = useState(false);
 
-  const handleHasMoneyChange = (checked: boolean) => {
-    const previousHasMoney = hasMoney;
-    setHasMoney(checked);
+  const canAllThreeBeOn = yaKelHaram || oneInAThousand;
 
-    // Check if this action is turning ON the switch to complete the trio
-    if (checked && !previousHasMoney && isAlgerian && isLivingInAlgeria) {
-      const newAttemptCounter = attemptCounter + 1;
-      setAttemptCounter(newAttemptCounter);
+  const handleMainSwitchToggle = (
+    switchName: 'hasMoney' | 'isAlgerian' | 'isLivingInAlgeria'
+  ) => {
+    let newHasMoney = hasMoney;
+    let newIsAlgerian = isAlgerian;
+    let newIsLivingInAlgeria = isLivingInAlgeria;
+    let justTurnedOn = false;
 
-      if (newAttemptCounter === 5) {
-        // 5th attempt: turn all switches ON, including yaKelHaram
-        setHasMoney(true);
-        setIsAlgerian(true);
-        setIsLivingInAlgeria(true);
-        setYaKelHaram(true);
-        return; // All switches are now on due to yaKelHaram, bypass normal 3-switch conflict
+    if (switchName === 'hasMoney') {
+      newHasMoney = !hasMoney;
+      justTurnedOn = newHasMoney;
+      setHasMoney(newHasMoney);
+    } else if (switchName === 'isAlgerian') {
+      newIsAlgerian = !isAlgerian;
+      justTurnedOn = newIsAlgerian;
+      setIsAlgerian(newIsAlgerian);
+    } else if (switchName === 'isLivingInAlgeria') {
+      newIsLivingInAlgeria = !isLivingInAlgeria;
+      justTurnedOn = newIsLivingInAlgeria;
+      setIsLivingInAlgeria(newIsLivingInAlgeria);
+    }
+
+    if (justTurnedOn && !canAllThreeBeOn) {
+      const currentlyOnCount = (newHasMoney ? 1 : 0) + (newIsAlgerian ? 1 : 0) + (newIsLivingInAlgeria ? 1 : 0);
+      if (currentlyOnCount === 3) {
+        const newAttemptCounter = attemptCounter + 1;
+        setAttemptCounter(newAttemptCounter);
+
+        if (newAttemptCounter >= 5 && !showYaKelHaramSwitch) {
+          setShowYaKelHaramSwitch(true);
+          // Force all main switches and yaKelHaram ON
+          setHasMoney(true);
+          setIsAlgerian(true);
+          setIsLivingInAlgeria(true);
+          setYaKelHaram(true);
+        } else {
+          // Not the 5th attempt, or yaKelHaram already shown (but off), so apply 2-of-3
+          if (switchName === 'hasMoney') setIsAlgerian(false);
+          else if (switchName === 'isAlgerian') setIsLivingInAlgeria(false);
+          else if (switchName === 'isLivingInAlgeria') setHasMoney(false);
+        }
       }
-    }
-
-    // Regular 3-switch conflict resolution (if not the 5th attempt override)
-    if (checked && isAlgerian && isLivingInAlgeria && !yaKelHaram) {
-        setIsAlgerian(false); 
-    }
-  };
-
-  const handleIsAlgerianChange = (checked: boolean) => {
-    const previousIsAlgerian = isAlgerian;
-    setIsAlgerian(checked);
-
-    if (checked && !previousIsAlgerian && hasMoney && isLivingInAlgeria) {
-      const newAttemptCounter = attemptCounter + 1;
-      setAttemptCounter(newAttemptCounter);
-
-      if (newAttemptCounter === 5) {
-        setHasMoney(true);
-        setIsAlgerian(true);
-        setIsLivingInAlgeria(true);
-        setYaKelHaram(true);
-        return;
-      }
-    }
-    
-    if (checked && hasMoney && isLivingInAlgeria && !yaKelHaram) {
-      setIsLivingInAlgeria(false);
-    }
-  };
-
-  const handleIsLivingInAlgeriaChange = (checked: boolean) => {
-    const previousIsLivingInAlgeria = isLivingInAlgeria;
-    setIsLivingInAlgeria(checked);
-
-    if (checked && !previousIsLivingInAlgeria && hasMoney && isAlgerian) {
-      const newAttemptCounter = attemptCounter + 1;
-      setAttemptCounter(newAttemptCounter);
-
-      if (newAttemptCounter === 5) {
-        setHasMoney(true);
-        setIsAlgerian(true);
-        setIsLivingInAlgeria(true);
-        setYaKelHaram(true);
-        return;
-      }
-    }
-
-    if (checked && hasMoney && isAlgerian && !yaKelHaram) {
-      setHasMoney(false);
     }
   };
 
   const handleYaKelHaramChange = (checked: boolean) => {
     setYaKelHaram(checked);
-    if (checked) {
+    if (checked) { // Turning ON Illegal Money
       setHasMoney(true);
       setIsAlgerian(true);
       setIsLivingInAlgeria(true);
-    } else {
-      // If "Illegal Money" is turned off, "Has Money" turns on.
-      // isAlgerian and isLivingInAlgeria turn off to go back to the 3-switch system.
+    } else { // Turning OFF Illegal Money
+      if (showYaKelHaramSwitch && !showOneInAThousandSwitch) {
+        setShowOneInAThousandSwitch(true);
+        setOneInAThousand(false); // Initialize it to off when it first appears
+      }
+      if (!oneInAThousand) { // If 1/1000 is also off, then enforce 2-of-3
+        setHasMoney(true);
+        setIsAlgerian(false);
+        setIsLivingInAlgeria(false);
+      } else { // 1/1000 is ON, keep all three on
+        setHasMoney(true);
+        setIsAlgerian(true);
+        setIsLivingInAlgeria(true);
+      }
+    }
+  };
+
+  const handleOneInAThousandChange = (checked: boolean) => {
+    setOneInAThousand(checked);
+    if (checked) { // Turning ON One in a Thousand
+      if(!yaKelHaram) setYaKelHaram(true); // Ensure yaKelHaram is also on
       setHasMoney(true);
-      setIsAlgerian(false);
-      setIsLivingInAlgeria(false);
+      setIsAlgerian(true);
+      setIsLivingInAlgeria(true);
+    } else { // Turning OFF One in a Thousand
+      if (!yaKelHaram) { // If yaKelHaram is also OFF, apply 2-of-3 logic
+        setHasMoney(true);
+        setIsAlgerian(false);
+        setIsLivingInAlgeria(false);
+      } else { // yaKelHaram is ON, keep all three on
+        setHasMoney(true);
+        setIsAlgerian(true);
+        setIsLivingInAlgeria(true);
+      }
     }
   };
 
@@ -132,7 +143,10 @@ export default function AlgerianLifePage() {
     setIsAlgerian(false);
     setIsLivingInAlgeria(false);
     setYaKelHaram(false);
+    setOneInAThousand(false);
     setAttemptCounter(0);
+    setShowYaKelHaramSwitch(false);
+    setShowOneInAThousandSwitch(false);
   };
 
   const toggleLanguage = () => {
@@ -140,8 +154,6 @@ export default function AlgerianLifePage() {
   };
 
   const currentTranslations = translations[language];
-  const showExtraSwitch = attemptCounter >= 5;
-  const mainSwitchesDisabled = showExtraSwitch && yaKelHaram;
 
   return (
     <div className="min-h-screen w-full flex flex-col items-center justify-center p-4 selection:bg-primary/40 selection:text-primary-foreground bg-background text-foreground">
@@ -152,57 +164,54 @@ export default function AlgerianLifePage() {
               {currentTranslations.toggleTo}
             </Button>
           </div>
-          <CardTitle className="text-2xl font-semibold tracking-tight pt-2">
+          <CardTitle className="text-xl font-semibold tracking-tight pt-2">
             {currentTranslations.pageTitle}
           </CardTitle>
-          <CardDescription className="text-sm text-muted-foreground">
+          <CardDescription className="text-xs text-muted-foreground">
             {currentTranslations.pageDescription}
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6 pt-6 pb-10" dir={language === 'ar' ? 'rtl' : 'ltr'}>
           <div className="flex items-center justify-between p-3 rounded-lg bg-secondary/50 shadow-md hover:shadow-lg transition-shadow duration-300">
-            <Label htmlFor="money-switch" className="font-medium text-base" dir={language === 'ar' ? 'rtl' : 'ltr'}>
+            <Label htmlFor="money-switch" className="font-medium text-xs" dir={language === 'ar' ? 'rtl' : 'ltr'}>
               {currentTranslations.hasMoney}
             </Label>
             <Switch
               id="money-switch"
               checked={hasMoney}
-              onCheckedChange={handleHasMoneyChange}
+              onCheckedChange={() => handleMainSwitchToggle('hasMoney')}
               aria-label={currentTranslations.hasMoney}
               className="data-[state=checked]:bg-primary data-[state=unchecked]:bg-input"
-              disabled={mainSwitchesDisabled}
             />
           </div>
           <div className="flex items-center justify-between p-3 rounded-lg bg-secondary/50 shadow-md hover:shadow-lg transition-shadow duration-300">
-            <Label htmlFor="algerian-switch" className="font-medium text-base" dir={language === 'ar' ? 'rtl' : 'ltr'}>
+            <Label htmlFor="algerian-switch" className="font-medium text-xs" dir={language === 'ar' ? 'rtl' : 'ltr'}>
               {currentTranslations.algerian}
             </Label>
             <Switch
               id="algerian-switch"
               checked={isAlgerian}
-              onCheckedChange={handleIsAlgerianChange}
+              onCheckedChange={() => handleMainSwitchToggle('isAlgerian')}
               aria-label={currentTranslations.algerian}
               className="data-[state=checked]:bg-primary data-[state=unchecked]:bg-input"
-              disabled={mainSwitchesDisabled}
             />
           </div>
           <div className="flex items-center justify-between p-3 rounded-lg bg-secondary/50 shadow-md hover:shadow-lg transition-shadow duration-300">
-            <Label htmlFor="living-switch" className="font-medium text-base" dir={language === 'ar' ? 'rtl' : 'ltr'}>
+            <Label htmlFor="living-switch" className="font-medium text-xs" dir={language === 'ar' ? 'rtl' : 'ltr'}>
               {currentTranslations.livingInAlgeria}
             </Label>
             <Switch
               id="living-switch"
               checked={isLivingInAlgeria}
-              onCheckedChange={handleIsLivingInAlgeriaChange}
+              onCheckedChange={() => handleMainSwitchToggle('isLivingInAlgeria')}
               aria-label={currentTranslations.livingInAlgeria}
               className="data-[state=checked]:bg-primary data-[state=unchecked]:bg-input"
-              disabled={mainSwitchesDisabled}
             />
           </div>
 
-          {showExtraSwitch && (
+          {showYaKelHaramSwitch && (
             <div className="flex items-center justify-between p-3 rounded-lg bg-destructive/20 border border-destructive/50 shadow-md hover:shadow-lg transition-shadow duration-300 mt-4">
-              <Label htmlFor="haram-switch" className="font-medium text-base text-destructive" dir={language === 'ar' ? 'rtl' : 'ltr'}>
+              <Label htmlFor="haram-switch" className="font-medium text-xs text-destructive" dir={language === 'ar' ? 'rtl' : 'ltr'}>
                 {currentTranslations.yaKelHaram}
               </Label>
               <Switch
@@ -214,15 +223,30 @@ export default function AlgerianLifePage() {
               />
             </div>
           )}
+
+          {showOneInAThousandSwitch && (
+            <div className="flex items-center justify-between p-3 rounded-lg bg-green-500/10 border border-green-600 shadow-lg shadow-green-600/30 hover:shadow-xl hover:shadow-green-600/50 transition-all duration-300 mt-4">
+              <Label htmlFor="one-in-thousand-switch" className="font-medium text-xs text-green-700 dark:text-green-400" dir={language === 'ar' ? 'rtl' : 'ltr'}>
+                {currentTranslations.oneInAThousand}
+              </Label>
+              <Switch
+                id="one-in-thousand-switch"
+                checked={oneInAThousand}
+                onCheckedChange={handleOneInAThousandChange}
+                aria-label={currentTranslations.oneInAThousand}
+                className="data-[state=checked]:bg-green-600 data-[state=unchecked]:bg-input"
+              />
+            </div>
+          )}
         </CardContent>
         <CardFooter className="flex-col items-center pt-2 pb-6 space-y-3">
-          {showExtraSwitch && (
+          {showYaKelHaramSwitch && (
             <Button variant="outline" onClick={resetExperience} className="w-full sm:w-auto">
               {currentTranslations.resetExperience}
             </Button>
           )}
           <Link href={`/about?lang=${language}`} passHref>
-            <span className="text-sm text-primary hover:underline cursor-pointer">
+            <span className="text-[11px] text-primary hover:underline cursor-pointer">
               {currentTranslations.whatIsThis}
             </span>
           </Link>
