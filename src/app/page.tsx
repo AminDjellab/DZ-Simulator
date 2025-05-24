@@ -2,19 +2,25 @@
 "use client";
 
 import { useState } from 'react';
+import Link from 'next/link';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { HelpCircle } from 'lucide-react';
 
 export default function AlgerianLifePage() {
   const [hasMoney, setHasMoney] = useState(false);
   const [isAlgerian, setIsAlgerian] = useState(false);
   const [isLivingInAlgeria, setIsLivingInAlgeria] = useState(false);
 
+  // Logic: If 'Living in Algeria' and 'Has Money' are true, then 'Is Algerian' turns off.
+  // If 'Has Money' and 'Is Algerian' are true, then 'Living in Algeria' turns off.
+  // The Main Joke: If 'Living in Algeria' and 'Is Algerian' are true, then 'Has Money' turns off.
+
   const handleHasMoneyChange = (checked: boolean) => {
     setHasMoney(checked);
     if (checked && isAlgerian && isLivingInAlgeria) {
-      // If turning HasMoney ON makes all three true, turn IsAlgerian OFF.
+      // If all three would be true, turn off Is Algerian
       setIsAlgerian(false);
     }
   };
@@ -22,23 +28,25 @@ export default function AlgerianLifePage() {
   const handleIsAlgerianChange = (checked: boolean) => {
     setIsAlgerian(checked);
     if (checked && hasMoney && isLivingInAlgeria) {
-      // If turning IsAlgerian ON makes all three true, turn LivingInAlgeria OFF.
+      // If all three would be true, turn off Living in Algeria
       setIsLivingInAlgeria(false);
     }
   };
 
   const handleIsLivingInAlgeriaChange = (checked: boolean) => {
     setIsLivingInAlgeria(checked);
-    // This is the primary joke:
-    // If LivingInAlgeria is turned ON, and HasMoney and IsAlgerian were already ON,
-    // then HasMoney turns OFF.
     if (checked && hasMoney && isAlgerian) {
+      // Main Joke: If Living in Algeria is ON, and Has Money & Is Algerian were ON,
+      // then Has Money turns OFF.
       setHasMoney(false);
     }
   };
 
   return (
-    <div className="min-h-screen w-full flex flex-col items-center justify-center p-4 selection:bg-primary/40 selection:text-primary-foreground">
+    <div className="min-h-screen w-full flex flex-col items-center justify-center p-4 selection:bg-primary/40 selection:text-primary-foreground relative">
+      <Link href="/about" className="absolute top-6 left-6 text-primary hover:text-primary/80 transition-colors" aria-label="About page">
+        <HelpCircle size={32} />
+      </Link>
       <Card className="w-full max-w-lg shadow-2xl bg-card/80 backdrop-blur-sm border-border/50">
         <CardHeader className="pb-4">
           <CardTitle className="text-center text-4xl font-extrabold tracking-tight">
