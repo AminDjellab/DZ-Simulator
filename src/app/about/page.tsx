@@ -61,37 +61,37 @@ export default function AboutPage() {
     <div className="min-h-screen w-full flex flex-col items-center justify-center p-4 selection:bg-primary/40 selection:text-primary-foreground bg-background text-foreground font-pixel" dir={currentLang === 'ar' ? 'rtl' : 'ltr'}>
       <Card className="w-full max-w-2xl shadow-2xl bg-card/80 backdrop-blur-sm border-border/50">
         <CardHeader className="pb-4 relative">
-          <Link href="/" className={`absolute top-4 ${currentLang === 'ar' ? 'right-4' : 'left-4'} text-primary hover:text-primary/80 transition-colors`} aria-label={T.backToHome}>
+          <Link href={`/?lang=${currentLang}`} className={`absolute top-4 ${currentLang === 'ar' ? 'right-4' : 'left-4'} text-primary hover:text-primary/80 transition-colors`} aria-label={T.backToHome}>
             <ArrowLeft size={28} className={currentLang === 'ar' ? 'transform scale-x-[-1]' : ''} />
           </Link>
           <CardTitle className="text-center text-base font-bold tracking-tight pt-2">
             {T.title}
           </CardTitle>
         </CardHeader>
-        <CardContent className="space-y-6 pt-6 pb-10 leading-relaxed">
+        <CardContent className="space-y-6 pt-6 pb-10">
           <div className="text-center">
             <p className="font-semibold text-xs">{T.developedBy}</p> 
           </div>
           
           <div className="space-y-2">
             <h2 className="text-sm font-semibold text-primary">{T.supportTitle}</h2>
-            <p className="text-[11px]">
+            <p className="text-[11px] leading-relaxed">
               {T.supportMessage}
             </p>
             <p className="text-[11px]">{T.supportVia}</p>
-            <ul className={`list-disc list-inside space-y-1 ${currentLang === 'ar' ? 'pr-4' : 'pl-4'} text-[11px]`}>
+            <ul className={`list-disc list-inside space-y-1 ${currentLang === 'ar' ? 'pr-4' : 'pl-4'} text-xs`}>
               <li>
-                <strong>{T.binance}</strong> {T.binanceDetail} <span className="font-mono text-primary text-[11px]">91561758</span>
+                <strong>{T.binance}</strong> {T.binanceDetail} <span className="font-mono text-primary text-xs">91561758</span>
               </li>
               <li>
-                <strong>{T.mexc}</strong> {T.mexcDetail} <span className="font-mono text-primary text-[11px]">72844962</span>
+                <strong>{T.mexc}</strong> {T.mexcDetail} <span className="font-mono text-primary text-xs">72844962</span>
               </li>
             </ul>
           </div>
 
           <div className="space-y-2">
             <h2 className="text-sm font-semibold text-primary">{T.contactTitle}</h2>
-            <p className="text-[11px]">
+            <p className="text-[11px] leading-relaxed">
               {T.contactMessage} <a href="mailto:its.amin.djellab@gmail.com" className="text-primary hover:underline">its.amin.djellab@gmail.com</a>
             </p>
           </div>
