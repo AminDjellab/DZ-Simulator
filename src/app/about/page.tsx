@@ -64,45 +64,45 @@ export default function AboutPage() {
       <Card className="w-full max-w-lg shadow-2xl bg-card text-card-foreground">
         <CardHeader className="pb-4 relative">
           <Link href={`/?lang=${currentLang}`} className={`absolute top-4 ${currentLang === 'ar' ? 'right-4' : 'left-4'} text-primary hover:text-primary/80 transition-colors`} aria-label={t.backToHome}>
-            <ArrowLeft size={28} className={currentLang === 'ar' ? 'transform scale-x-[-1]' : ''}/>
+            <ArrowLeft size={32} className={currentLang === 'ar' ? 'transform scale-x-[-1]' : ''}/>
           </Link>
-          <CardTitle className="text-center text-lg font-semibold tracking-tight pt-2">
+          <CardTitle className="text-center text-2xl font-semibold tracking-tight pt-2">
             {t.title}
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-6 pt-6 pb-10">
           <div className="text-center">
-            <p className="text-sm leading-relaxed">
+            <p className="text-lg leading-relaxed">
               {t.intro}
             </p>
-            <p className="text-sm text-muted-foreground mt-4">{t.developedBy}</p>
-            <p className="font-semibold text-base">{t.developerName}</p>
+            <p className="text-lg text-muted-foreground mt-4">{t.developedBy}</p>
+            <p className="font-semibold text-xl">{t.developerName}</p>
           </div>
 
           <div className="space-y-2 text-center">
-            <h2 className="text-base font-semibold text-primary">{t.supportTitle}</h2>
-            <p className="text-sm leading-relaxed">
+            <h2 className="text-xl font-semibold text-primary">{t.supportTitle}</h2>
+            <p className="text-lg leading-relaxed">
               {t.supportMessage}
             </p>
-            <p className="text-sm">{t.supportVia}</p>
-            <ul className="list-none space-y-1 text-sm">
+            <p className="text-lg">{t.supportVia}</p>
+            <ul className="list-none space-y-1 text-lg">
               <li>
-                {t.binanceUID} <span className="font-mono text-primary text-sm">91561758</span>
+                {t.binanceUID} <span className="font-mono text-primary text-lg">91561758</span>
               </li>
               <li>
-                {t.mexcUID} <span className="font-mono text-primary text-sm">72844962</span>
+                {t.mexcUID} <span className="font-mono text-primary text-lg">72844962</span>
               </li>
             </ul>
           </div>
 
           <div className="space-y-2 text-center">
-            <h2 className="text-base font-semibold text-primary">{t.contactTitle}</h2>
-            <p className="text-sm leading-relaxed">
+            <h2 className="text-xl font-semibold text-primary">{t.contactTitle}</h2>
+            <p className="text-lg leading-relaxed">
               {t.contactMessage} <a href="mailto:its.amin.djellab@gmail.com" className="text-primary hover:underline">its.amin.djellab@gmail.com</a>
             </p>
           </div>
           
-          <div className={`mt-8 text-xs text-muted-foreground opacity-60 ${currentLang === 'ar' ? 'text-left' : 'text-right'}`}>
+          <div className={`mt-8 text-sm text-muted-foreground opacity-60 ${currentLang === 'ar' ? 'text-left' : 'text-right'}`}>
             <p>D-2646</p>
           </div>
         </CardContent>

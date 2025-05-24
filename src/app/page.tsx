@@ -50,10 +50,17 @@ export default function AlgerianLifePage() {
 
   const currentTranslations = translations[language];
 
-  // Unified handler for the three main switches
   const handleMainSwitchToggle = (
     switchName: 'hasMoney' | 'isAlgerian' | 'isLivingInAlgeria'
   ) => {
+    if (yaKelHaram || oneInAThousand) {
+      // If super switches are active, main switches operate independently
+      if (switchName === 'hasMoney') setHasMoney(!hasMoney);
+      if (switchName === 'isAlgerian') setIsAlgerian(!isAlgerian);
+      if (switchName === 'isLivingInAlgeria') setIsLivingInAlgeria(!isLivingInAlgeria);
+      return;
+    }
+
     let newHasMoney = hasMoney;
     let newIsAlgerian = isAlgerian;
     let newIsLivingInAlgeria = isLivingInAlgeria;
@@ -70,36 +77,35 @@ export default function AlgerianLifePage() {
       newIsLivingInAlgeria = !isLivingInAlgeria;
       justTurnedOn = newIsLivingInAlgeria;
     }
+    
+    const currentlyOnCount = (newHasMoney ? 1:0) + (newIsAlgerian ? 1:0) + (newIsLivingInAlgeria ? 1:0);
 
-    // Apply the new state immediately
-    setHasMoney(newHasMoney);
-    setIsAlgerian(newIsAlgerian);
-    setIsLivingInAlgeria(newIsLivingInAlgeria);
+    if (justTurnedOn && currentlyOnCount === 3) { // Trying to turn on the 3rd switch
+      const newAttemptCounter = attemptCounter + 1;
+      setAttemptCounter(newAttemptCounter);
 
-    // Logic for attempt counting and super switch activation
-    if (justTurnedOn && !yaKelHaram && !oneInAThousand) {
-      const currentlyOnCount = (newHasMoney ? 1 : 0) + (newIsAlgerian ? 1 : 0) + (newIsLivingInAlgeria ? 1 : 0);
-      if (currentlyOnCount === 3) {
-        const newAttemptCounter = attemptCounter + 1;
-        setAttemptCounter(newAttemptCounter);
-
-        if (newAttemptCounter >= 5) {
-          setShowYaKelHaramSwitch(true);
-          setHasMoney(true);
-          setIsAlgerian(true);
-          setIsLivingInAlgeria(true);
-          setYaKelHaram(true); // Automatically turn on Illegal Money
-        } else {
-          // Not the 5th attempt, enforce 2-of-3 rule
-          if (switchName === 'hasMoney') setIsAlgerian(false);
-          else if (switchName === 'isAlgerian') setIsLivingInAlgeria(false);
-          else if (switchName === 'isLivingInAlgeria') setHasMoney(false);
-        }
+      if (newAttemptCounter >= 5) {
+        setShowYaKelHaramSwitch(true);
+        setYaKelHaram(true); // Automatically turn on Illegal Money
+        setHasMoney(true);
+        setIsAlgerian(true);
+        setIsLivingInAlgeria(true);
+      } else {
+        // Enforce 2-of-3 rule by turning one off
+        if (switchName === 'hasMoney') setIsAlgerian(false);
+        else if (switchName === 'isAlgerian') setIsLivingInAlgeria(false);
+        else if (switchName === 'isLivingInAlgeria') setHasMoney(false);
+        
+        // Apply the toggled switch's new state
+        if (switchName === 'hasMoney') setHasMoney(newHasMoney);
+        if (switchName === 'isAlgerian') setIsAlgerian(newIsAlgerian);
+        if (switchName === 'isLivingInAlgeria') setIsLivingInAlgeria(newIsLivingInAlgeria);
       }
-    } else if (!justTurnedOn && !yaKelHaram && !oneInAThousand) {
-      // If a switch is turned off, and no super switch is active, ensure 2-of-3 rule doesn't get violated weirdly.
-      // This part might be redundant if the above covers all cases but good for explicit state.
-      // For instance, if turning off leaves only one switch ON, it's fine.
+    } else {
+      // Apply the new state directly if not triggering the 3-on scenario or if turning a switch off
+      setHasMoney(newHasMoney);
+      setIsAlgerian(newIsAlgerian);
+      setIsLivingInAlgeria(newIsLivingInAlgeria);
     }
   };
 
@@ -114,13 +120,13 @@ export default function AlgerianLifePage() {
       // Turning OFF Illegal Money
       if (showYaKelHaramSwitch && !showOneInAThousandSwitch) {
         setShowOneInAThousandSwitch(true);
-        setOneInAThousand(false); // Initialize it to off when it first appears
+        setOneInAThousand(false); 
       }
-      if (!oneInAThousand) { // If 1/1000 is also off, then enforce 2-of-3 by default
-        setHasMoney(true); // As per previous logic, turning off YKH when OIT is off would enable HM and disable others
+      if (!oneInAThousand) { 
+        setHasMoney(true); 
         setIsAlgerian(false);
         setIsLivingInAlgeria(false);
-      } else { // 1/1000 is ON, keep all three on
+      } else { 
         setHasMoney(true);
         setIsAlgerian(true);
         setIsLivingInAlgeria(true);
@@ -130,17 +136,17 @@ export default function AlgerianLifePage() {
 
   const handleOneInAThousandChange = (checked: boolean) => {
     setOneInAThousand(checked);
-    if (checked) { // Turning ON One in a Thousand
-      if (!yaKelHaram) setYaKelHaram(true); // Ensure yaKelHaram is also on if OIT is turned on
+    if (checked) { 
+      if (!yaKelHaram) setYaKelHaram(true); 
       setHasMoney(true);
       setIsAlgerian(true);
       setIsLivingInAlgeria(true);
-    } else { // Turning OFF One in a Thousand
-      if (!yaKelHaram) { // If yaKelHaram is also OFF, apply 2-of-3 logic
+    } else { 
+      if (!yaKelHaram) { 
         setHasMoney(true);
         setIsAlgerian(false);
         setIsLivingInAlgeria(false);
-      } else { // yaKelHaram is ON, keep all three main switches on
+      } else { 
         setHasMoney(true);
         setIsAlgerian(true);
         setIsLivingInAlgeria(true);
@@ -170,20 +176,20 @@ export default function AlgerianLifePage() {
       <Card className="w-full max-w-lg shadow-2xl bg-card text-card-foreground">
         <CardHeader className="pb-4 relative text-center">
           <div className={`absolute top-4 ${language === 'ar' ? 'left-4' : 'right-4'}`}>
-            <Button variant="ghost" size="sm" onClick={toggleLanguage} aria-label={`Switch to ${currentTranslations.toggleTo}`} className="text-xs">
+            <Button variant="ghost" size="sm" onClick={toggleLanguage} aria-label={`Switch to ${currentTranslations.toggleTo}`} className="text-sm">
               {currentTranslations.toggleTo}
             </Button>
           </div>
-          <CardTitle className="text-xl font-semibold tracking-tight pt-2">
+          <CardTitle className="text-3xl font-semibold tracking-tight pt-2">
             {translations.en.pageTitle} {/* Title always in English */}
           </CardTitle>
-          <CardDescription className="text-xs text-muted-foreground">
+          <CardDescription className="text-sm text-muted-foreground">
             {translations.en.pageDescription} {/* Description always in English */}
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6 pt-6 pb-10" dir={language === 'ar' ? 'rtl' : 'ltr'}>
           <div className="flex items-center justify-between p-3 rounded-lg bg-secondary/50 shadow-md hover:shadow-lg transition-shadow duration-300">
-            <Label htmlFor="money-switch" className="font-medium text-sm" dir={language === 'ar' ? 'rtl' : 'ltr'}>
+            <Label htmlFor="money-switch" className="font-medium text-lg" dir={language === 'ar' ? 'rtl' : 'ltr'}>
               {currentTranslations.hasMoney}
             </Label>
             <Switch
@@ -196,7 +202,7 @@ export default function AlgerianLifePage() {
             />
           </div>
           <div className="flex items-center justify-between p-3 rounded-lg bg-secondary/50 shadow-md hover:shadow-lg transition-shadow duration-300">
-            <Label htmlFor="algerian-switch" className="font-medium text-sm" dir={language === 'ar' ? 'rtl' : 'ltr'}>
+            <Label htmlFor="algerian-switch" className="font-medium text-lg" dir={language === 'ar' ? 'rtl' : 'ltr'}>
               {currentTranslations.algerian}
             </Label>
             <Switch
@@ -209,7 +215,7 @@ export default function AlgerianLifePage() {
             />
           </div>
           <div className="flex items-center justify-between p-3 rounded-lg bg-secondary/50 shadow-md hover:shadow-lg transition-shadow duration-300">
-            <Label htmlFor="living-switch" className="font-medium text-sm" dir={language === 'ar' ? 'rtl' : 'ltr'}>
+            <Label htmlFor="living-switch" className="font-medium text-lg" dir={language === 'ar' ? 'rtl' : 'ltr'}>
               {currentTranslations.livingInAlgeria}
             </Label>
             <Switch
@@ -224,7 +230,7 @@ export default function AlgerianLifePage() {
 
           {showYaKelHaramSwitch && (
             <div className="flex items-center justify-between p-3 rounded-lg bg-destructive/20 border border-destructive/50 shadow-lg shadow-red-500/40 hover:shadow-xl hover:shadow-red-600/50 transition-all duration-300 mt-4">
-              <Label htmlFor="haram-switch" className="font-medium text-sm text-destructive dark:text-red-400" dir={language === 'ar' ? 'rtl' : 'ltr'}>
+              <Label htmlFor="haram-switch" className="font-medium text-lg text-destructive dark:text-red-400" dir={language === 'ar' ? 'rtl' : 'ltr'}>
                 {currentTranslations.yaKelHaram}
               </Label>
               <Switch
@@ -239,7 +245,7 @@ export default function AlgerianLifePage() {
 
           {showOneInAThousandSwitch && (
             <div className="flex items-center justify-between p-3 rounded-lg bg-green-500/10 border border-green-600 shadow-lg shadow-green-500/30 hover:shadow-xl hover:shadow-green-600/50 transition-all duration-300 mt-4">
-              <Label htmlFor="one-in-thousand-switch" className="font-medium text-sm text-green-700 dark:text-green-400" dir={language === 'ar' ? 'rtl' : 'ltr'}>
+              <Label htmlFor="one-in-thousand-switch" className="font-medium text-lg text-green-700 dark:text-green-400" dir={language === 'ar' ? 'rtl' : 'ltr'}>
                 {currentTranslations.oneInAThousand}
               </Label>
               <Switch
@@ -254,12 +260,12 @@ export default function AlgerianLifePage() {
         </CardContent>
         <CardFooter className="flex-col items-center pt-2 pb-6 space-y-3">
           {showYaKelHaramSwitch && (
-            <Button variant="outline" size="sm" onClick={resetExperience} className="w-full sm:w-auto text-xs">
+            <Button variant="outline" size="sm" onClick={resetExperience} className="w-full sm:w-auto text-sm">
               {currentTranslations.resetExperience}
             </Button>
           )}
           <Link href={`/about?lang=${language}`} passHref>
-            <span className="text-xs text-primary hover:underline cursor-pointer">
+            <span className="text-sm text-primary hover:underline cursor-pointer">
               {currentTranslations.whatIsThis}
             </span>
           </Link>
