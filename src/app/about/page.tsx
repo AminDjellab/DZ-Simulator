@@ -24,7 +24,7 @@ export default function AboutPage() {
         <CardContent className="space-y-6 pt-6 pb-10">
           <div className="text-center">
             <p className="text-base">
-              Algerian Life Sim is about how life in Algeria is hard.
+              Algerian Life Sim is an artistic way to explain how life in Algeria is m9awda.
             </p>
             <p className="font-semibold text-lg mt-2">Developed by D-2646 (AMIN DJELLAB)</p>
           </div>
