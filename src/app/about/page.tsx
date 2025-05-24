@@ -19,7 +19,8 @@ const aboutTranslations = {
     title: 'About Algerian Life Sim',
     backToHome: "Back to home",
     intro: "Algerian Life Sim is an artistic way to explain how life in Algeria is m9awda.",
-    developedBy: "Developed by D-2646 (AMIN DJELLAB)",
+    developedBy: "Developed by",
+    developerName: "Mohammed Amin Djellab",
     supportTitle: "Support My Work",
     supportMessage: "If you enjoy Algerian Life Simulator and would like to support my journey in the game development industry, any contribution would be greatly appreciated and help me continue to learn and create.",
     supportVia: "You can send support via:",
@@ -32,7 +33,8 @@ const aboutTranslations = {
     title: 'حول محاكي الحياة الجزائرية',
     backToHome: "العودة إلى الرئيسية",
     intro: "محاكي الحياة الجزائرية هو طريقة فنية لشرح كيف أن الحياة في الجزائر مقودة.",
-    developedBy: "تم التطوير بواسطة D-2646 (أمين جلاب)",
+    developedBy: "تم التطوير بواسطة",
+    developerName: "محمد أمين جلاب",
     supportTitle: "ادعم عملي",
     supportMessage: "إذا استمتعت بمحاكي الحياة الجزائرية وترغب في دعم رحلتي في صناعة تطوير الألعاب، فإن أي مساهمة ستكون موضع تقدير كبير وستساعدني على مواصلة التعلم والإنشاء.",
     supportVia: "يمكنك إرسال الدعم عبر:",
@@ -70,10 +72,11 @@ export default function AboutPage() {
         </CardHeader>
         <CardContent className="space-y-6 pt-6 pb-10">
           <div className="text-center">
-            <p className="text-base">
+            <p className="text-base leading-relaxed">
               {t.intro}
             </p>
-            <p className="font-semibold text-lg mt-2">{t.developedBy}</p>
+            <p className="text-sm text-muted-foreground mt-4">{t.developedBy}</p>
+            <p className="font-semibold text-lg">{t.developerName}</p>
           </div>
 
           <div className="space-y-2 text-center">
@@ -97,6 +100,10 @@ export default function AboutPage() {
             <p className="text-base leading-relaxed">
               {t.contactMessage} <a href="mailto:its.amin.djellab@gmail.com" className="text-primary hover:underline">its.amin.djellab@gmail.com</a>
             </p>
+          </div>
+          
+          <div className={`mt-8 text-xs text-muted-foreground opacity-60 ${currentLang === 'ar' ? 'text-left' : 'text-right'}`}>
+            <p>D-2646</p>
           </div>
         </CardContent>
       </Card>
